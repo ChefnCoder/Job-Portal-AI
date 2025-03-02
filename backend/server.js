@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const cookieParser = require("cookie-parser");
 const jobRoutes = require("./routes/jobRoutes");
-
+const applicationRoutes = require("./routes/applicationRoutes")
 const app = express();
 
 // Middleware
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
-
+app.use("/api/applications", applicationRoutes);
 
 
 // Start Server
