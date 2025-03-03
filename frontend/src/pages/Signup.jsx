@@ -1,5 +1,10 @@
-import React from "react";
+import AuthForm from "../components/AuthForm";
 
 export default function Signup() {
-  return <div className="flex items-center justify-center min-h-screen">Signup Page</div>;
+  const handleSignup = (formData) => {
+    console.log("Signing up with:", formData);
+    // Here we will integrate API call later
+  };
+
+  return <AuthForm type="signup" onSubmit={handleSignup} />;
 }

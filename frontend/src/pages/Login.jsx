@@ -1,5 +1,11 @@
-import React from "react";
+import AuthForm from "../components/AuthForm";
 
 export default function Login() {
-  return <div className="flex items-center justify-center min-h-screen">Login Page</div>;
+  
+  const handleLogin = (formData) => {
+    console.log("Logging in with:", formData);
+    // Here we will integrate API call later
+  };
+
+  return <AuthForm type="login" onSubmit={handleLogin} />;
 }
