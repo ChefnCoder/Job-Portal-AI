@@ -156,3 +156,63 @@ exports.getCandidateApplications = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+exports.getApplicantsForJob = async (req, res) => {
+  try {
+    const recruiterId = req.user.userId;
+
+    // Find jobs posted by this recruiter
+    const jobs = await Job.find({ postedBy: recruiterId });
+
+    if (!jobs.length) {
+      return res.status(404).json({ error: "No jobs found for this recruiter" });
+    }
+
+    // Extract job IDs
+    const jobIds = jobs.map(job => job._id);
+
+    // Fetch all applicants for these jobs & sort by match score (highest first)
+    const applications = await Application.find({ jobId: { $in: jobIds } })
+      .populate("candidateId", "name email") // Get candidate details
+      .populate("jobId", "title") // Get job title
+      .sort({ matchScore: -1 }); // Sort by highest match score
+
+    res.status(200).json(applications);
+  } catch (error) {
+    console.error("Error fetching applicants:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.updateApplicationStatus = async (req, res) => {
+  try {
+    const { applicationId, status } = req.body;
+
+    // Ensure valid status
+    const validStatuses = ["Applied", "In Process", "Selected", "Rejected"];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    // Find application
+    const application = await Application.findById(applicationId);
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    // Ensure only the recruiter who posted the job can update status
+    const job = await Job.findById(application.jobId);
+    if (!job || job.postedBy.toString() !== req.user.userId) {
+      return res.status(403).json({ error: "Unauthorized to update this application" });
+    }
+
+    // Update status
+    application.status = status;
+    await application.save();
+
+    res.status(200).json({ message: "Application status updated successfully", application });
+  } catch (error) {
+    console.error("Error updating application status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
