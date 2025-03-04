@@ -9,8 +9,8 @@ export default function Login() {
   const handleLogin = async (formData) => {
     const res = await login(formData);
     if (res) {
-      alert("Login successful! Redirecting...");
-      navigate(res.user.role === "recruiter" ? "/recruiter-dashboard" : "/dashboard");
+
+      navigate("/")
       window.location.reload(); // Refresh the page after navigating
     }
   };
