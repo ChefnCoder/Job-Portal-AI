@@ -11,6 +11,7 @@ export default function Login() {
     if (res) {
       alert("Login successful! Redirecting...");
       navigate(res.user.role === "recruiter" ? "/recruiter-dashboard" : "/dashboard");
+      window.location.reload(); // Refresh the page after navigating
     }
   };
 

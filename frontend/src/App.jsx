@@ -11,23 +11,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import JobDetails from "./pages/JobDetails";
 import PostJob from "./pages/PostJob";
 import ViewApplicants from "./pages/ViewApplicants";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       
-      <nav className="p-4 bg-white shadow-md flex justify-between">
-        <Link to="/" className="text-lg font-bold">Job Portal</Link>
-        <div className="space-x-4">
-        <Link to="/jobs" className="text-blue-500">Jobs</Link>
-        <Link to="/dashboard" className="text-blue-500">Dashboard</Link>
-        <Link to="/recruiter-dashboard" className="text-blue-500">RecruiterDashboard</Link>
-        <Link to="/login" className="text-blue-500">Login</Link>
-        <Link to="/signup" className="text-blue-500">Signup</Link>
-        
-
-        </div>
-      </nav>
+      <Navbar /> {/* ✅ Display Navbar Only After Login */}
       
       <Routes>
         <Route path="/" element={<Home />} />

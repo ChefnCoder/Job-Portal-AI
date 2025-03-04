@@ -61,36 +61,54 @@ export default function JobDetails() {
   if (!job) return <p>Loading job details...</p>;
 
   return (
-    <div className="p-6 grid grid-cols-2 gap-6">
-      {/* Left Half - Job Details */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold">{job.title}</h1>
-        <p className="mt-2">{job.description}</p>
-        <h2 className="text-xl font-semibold mt-4">Skills Required</h2>
-        <p>{job.skillsRequired.join(", ")}</p>
-        <h2 className="text-xl font-semibold mt-4">Experience Level</h2>
-        <p>{job.experienceLevel}</p>
+    <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {/* ✅ Left Half - Job Details */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-blue-600">{job.title}</h1>
+        <p className="mt-2 text-gray-700">{job.description}</p>
+        
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold text-gray-800">Skills Required</h2>
+          <p className="text-gray-600">{job.skillsRequired.join(", ")}</p>
+        </div>
+
+        <div className="mt-4">
+          <h2 className="text-lg font-semibold text-gray-800">Experience Level</h2>
+          <p className="text-gray-600">{job.experienceLevel}</p>
+        </div>
       </div>
 
-      {/* Right Half - Apply Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-2">Upload Resume</h2>
-        <form onSubmit={handleApply}>
+      {/* ✅ Right Half - Apply Section */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-4 text-blue-600">Upload Resume</h2>
+        <form onSubmit={handleApply} className="space-y-4">
           <input
             type="file"
             accept=".pdf"
             onChange={(e) => setResume(e.target.files[0])}
-            className="border p-2 w-full cursor-pointer"
+            className="w-full p-2 border border-gray-300 rounded-lg cursor-pointer"
             required
           />
-          <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded cursor-pointer">
-            Apply
+          <button 
+            type="submit" 
+            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">
+            Apply Now
           </button>
         </form>
 
-        {message && <p className="mt-2">{message}</p>}
-        {matchScore !== null && <p className="mt-2">Match Score: {matchScore}%</p>}
-        {status && <p className="mt-2">Application Status: {status}</p>}
+        {message && <p className="mt-4 text-center text-lg font-semibold">{message}</p>}
+        
+        {matchScore !== null && (
+          <div className="mt-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-800 rounded">
+            <p className="text-lg font-semibold">Match Score: {matchScore}%</p>
+          </div>
+        )}
+        
+        {status && (
+          <div className="mt-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded">
+            <p className="text-lg font-semibold">Application Status: {status}</p>
+          </div>
+        )}
       </div>
     </div>
   );

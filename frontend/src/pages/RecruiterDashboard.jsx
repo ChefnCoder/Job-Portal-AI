@@ -32,33 +32,33 @@ export default function RecruiterDashboard() {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Recruiter Dashboard</h1>
         <button
           onClick={() => navigate("/recruiter/post-job")}
-          className="px-4 py-2 bg-green-500 text-white rounded cursor-pointer"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition cursor-pointer"
         >
-          Post New Job
+          + Post New Job
         </button>
       </div>
-      <p>Welcome, {user?.name}</p>
+      <p className="mb-4">Welcome, <span className="font-semibold">{user?.name}</span></p>
 
-      {/* ✅ Recruiter Posted Jobs */}
-      <div className="bg-white p-4 rounded-lg shadow-md mt-4">
-        <h2 className="text-xl font-semibold mb-2">Your Posted Jobs</h2>
+      {/* Job Listings */}
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-3">Your Posted Jobs</h2>
         {jobs.length === 0 ? (
           <p>No jobs posted yet.</p>
         ) : (
-          <ul>
+          <ul className="space-y-4">
             {jobs.map((job) => (
-              <li key={job._id} className="p-4 border-b flex justify-between">
+              <li key={job._id} className="p-4 border rounded-lg flex justify-between bg-gray-50">
                 <div>
                   <h3 className="font-bold">{job.title}</h3>
-                  {/* <p className="text-sm">Applicants: {job.applicantCount || 0}</p> */}
+                  {/* <p className="text-sm text-gray-600">Applicants: {job.applicantCount || 0}</p> */}
                 </div>
                 <button
                   onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition cursor-pointer"
                 >
                   View Applicants
                 </button>

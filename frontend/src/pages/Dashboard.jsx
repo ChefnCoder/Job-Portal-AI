@@ -33,20 +33,21 @@ export default function Dashboard() {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Candidate Dashboard</h1>
-      <p className="mb-2">Welcome, {user?.name}</p>
+      <p className="mb-4">Welcome, <span className="font-semibold">{user?.name}</span></p>
 
       {/* Applied Jobs Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-2">My Applications</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md">
+        <h2 className="text-xl font-semibold mb-3">My Applications</h2>
         {applications.length === 0 ? (
           <p>No applications yet.</p>
         ) : (
-          <ul>
+          <ul className="space-y-4">
             {applications.map((app) => (
-              <li key={app._id} className="p-2 border-b">
-                <h3 className="font-bold">{app.jobId.title}</h3>
-                <p className="text-sm">Match Score: {app.matchScore}</p>
-                <p className="text-sm">Status: {app.status}</p>
+              <li key={app._id} className="p-4 border rounded-lg flex justify-between bg-gray-50">
+                <div>
+                  <h3 className="font-bold">{app.jobId.title}</h3>
+                  <p className="text-sm text-gray-600">Status: {app.status}</p>
+                </div>
               </li>
             ))}
           </ul>

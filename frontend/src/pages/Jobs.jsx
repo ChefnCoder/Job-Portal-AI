@@ -27,27 +27,29 @@ export default function Jobs() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">Available Jobs</h1>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold text-center mb-6">Available Jobs</h1>
+
       {jobs.length === 0 ? (
-        <p>No jobs available.</p>
+        <p className="text-center text-gray-500">No jobs available.</p>
       ) : (
-        <ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {jobs.map((job) => (
-            <li key={job._id} className="p-4 border-b flex justify-between">
-              <div>
-                <h3 className="font-bold">{job.title}</h3>
-                <p className="text-sm">{job.description}</p>
+            <div key={job._id} className="bg-white p-6 rounded-lg shadow-md border">
+              <h3 className="font-bold text-xl text-blue-600">{job.title}</h3>
+              <p className="text-sm text-gray-700 mt-2">{job.description}</p>
+              
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => navigate(`/jobs/${job._id}`)}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition cursor-pointer"
+                >
+                  View Job
+                </button>
               </div>
-              <button
-                onClick={() => navigate(`/jobs/${job._id}`)}
-                className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
-              >
-                View Job
-              </button>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
