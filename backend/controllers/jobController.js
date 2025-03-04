@@ -43,3 +43,16 @@ exports.getAllJobs = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+// Get a specific job by ID
+exports.getJobById = async (req, res) => {
+  try {
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+    res.status(200).json(job);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
