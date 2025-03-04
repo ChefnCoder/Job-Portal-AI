@@ -157,30 +157,50 @@ exports.getCandidateApplications = async (req, res) => {
   }
 };
 
+// exports.getApplicantsForJob = async (req, res) => {
+//   try {
+//     const recruiterId = req.user.userId;
+
+//     // Find jobs posted by this recruiter
+//     const jobs = await Job.find({ postedBy: recruiterId });
+
+//     if (!jobs.length) {
+//       return res.status(404).json({ error: "No jobs found for this recruiter" });
+//     }
+
+//     // Extract job IDs
+//     const jobIds = jobs.map(job => job._id);
+
+//     // Fetch all applicants for these jobs & sort by match score (highest first)
+//     const applications = await Application.find({ jobId: { $in: jobIds } })
+//       .populate("candidateId", "name email") // Get candidate details
+//       .populate("jobId", "title") // Get job title
+//       .sort({ matchScore: -1 }); // Sort by highest match score
+
+//     res.status(200).json(applications);
+//   } catch (error) {
+//     console.error("Error fetching applicants:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 exports.getApplicantsForJob = async (req, res) => {
   try {
+    const { jobId } = req.query;
     const recruiterId = req.user.userId;
 
-    // Find jobs posted by this recruiter
-    const jobs = await Job.find({ postedBy: recruiterId });
+    // Ensure the recruiter owns the job
+    const job = await Job.findOne({ _id: jobId, postedBy: recruiterId });
+    if (!job) return res.status(403).json({ error: "Unauthorized to view applicants for this job" });
 
-    if (!jobs.length) {
-      return res.status(404).json({ error: "No jobs found for this recruiter" });
-    }
-
-    // Extract job IDs
-    const jobIds = jobs.map(job => job._id);
-
-    // Fetch all applicants for these jobs & sort by match score (highest first)
-    const applications = await Application.find({ jobId: { $in: jobIds } })
-      .populate("candidateId", "name email") // Get candidate details
-      .populate("jobId", "title") // Get job title
-      .sort({ matchScore: -1 }); // Sort by highest match score
+    // Fetch applicants & sort by match score
+    const applications = await Application.find({ jobId })
+      .populate("candidateId", "name email")
+      .sort({ matchScore: -1 });
 
     res.status(200).json(applications);
   } catch (error) {
     console.error("Error fetching applicants:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Server error" });
   }
 };
 
