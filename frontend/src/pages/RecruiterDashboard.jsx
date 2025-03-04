@@ -54,7 +54,7 @@ export default function RecruiterDashboard() {
               <li key={job._id} className="p-4 border-b flex justify-between">
                 <div>
                   <h3 className="font-bold">{job.title}</h3>
-                  <p className="text-sm">Applicants: {job.applicantCount || 0}</p>
+                  {/* <p className="text-sm">Applicants: {job.applicantCount || 0}</p> */}
                 </div>
                 <button
                   onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}

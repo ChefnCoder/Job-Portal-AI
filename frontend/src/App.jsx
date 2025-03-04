@@ -10,6 +10,8 @@ import Applications from "./pages/Applications";
 import PrivateRoute from "./components/PrivateRoute";
 import JobDetails from "./pages/JobDetails";
 import PostJob from "./pages/PostJob";
+import ViewApplicants from "./pages/ViewApplicants";
+
 function App() {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -47,6 +49,7 @@ function App() {
         <Route element={<PrivateRoute allowedRoles={["recruiter"]} />}>
           <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
           <Route path="/recruiter/post-job" element={<PostJob />} />
+          <Route path="/recruiter/jobs/:id/applicants" element={<ViewApplicants />} />
 
         </Route>
       </Routes>
