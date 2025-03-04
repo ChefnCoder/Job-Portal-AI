@@ -8,7 +8,7 @@ import RecruiterDashboard from "./pages/RecruiterDashboard";
 import Jobs from "./pages/Jobs";
 import Applications from "./pages/Applications";
 import PrivateRoute from "./components/PrivateRoute";
-
+import JobDetails from "./pages/JobDetails";
 
 function App() {
   return (
@@ -17,10 +17,11 @@ function App() {
       <nav className="p-4 bg-white shadow-md flex justify-between">
         <Link to="/" className="text-lg font-bold">Job Portal</Link>
         <div className="space-x-4">
+        <Link to="/jobs" className="text-blue-500">Jobs</Link>
         <Link to="/dashboard" className="text-blue-500">Dashboard</Link>
         <Link to="/recruiter-dashboard" className="text-blue-500">RecruiterDashboard</Link>
-          <Link to="/login" className="text-blue-500">Login</Link>
-          <Link to="/signup" className="text-blue-500">Signup</Link>
+        <Link to="/login" className="text-blue-500">Login</Link>
+        <Link to="/signup" className="text-blue-500">Signup</Link>
         
 
         </div>
@@ -33,6 +34,8 @@ function App() {
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         {/* <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} /> */}
         <Route path="/jobs" element={<Jobs />} />
+        <Route path="/jobs/:id" element={<JobDetails />} />
+        
         <Route path="/applications" element={<Applications />} />
 
         {/* Protected Routes for Candidates */}
