@@ -1,12 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function AuthForm({ type, onSubmit }) {
+export default function AuthForm({ type, onSubmit, defaultValues }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     role: "candidate", // Default role
   });
+
+  // ✅ Autofill Form When `defaultValues` Change
+  useEffect(() => {
+    if (defaultValues) {
+      setFormData((prev) => ({
+        ...prev,
+        email: defaultValues.email || "",
+        password: defaultValues.password || "",
+      }));
+    }
+  }, [defaultValues]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,7 +29,7 @@ export default function AuthForm({ type, onSubmit }) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-[80vh] bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold text-center mb-6">
           {type === "login" ? "Login to Your Account" : "Create an Account"}
