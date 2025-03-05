@@ -91,7 +91,7 @@ export default function JobDetails() {
           />
           <button 
             type="submit" 
-            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition">
+            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition cursor-pointer">
             Apply Now
           </button>
         </form>
