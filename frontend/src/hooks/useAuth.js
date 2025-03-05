@@ -51,8 +51,7 @@ export function useAuth() {
         data: formData,
         withCredentials: true,
       });
-      localStorage.setItem("token", res.data.accessToken);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      
       setUser(res.data.user);
       return res.data;
     } catch (err) {
