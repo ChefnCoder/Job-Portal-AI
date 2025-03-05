@@ -68,7 +68,7 @@ export default function AuthForm({ type, onSubmit }) {
           />
           <button
             type="submit"
-            className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition"
+            className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition cursor-pointer"
           >
             {type === "login" ? "Login" : "Signup"}
           </button>
