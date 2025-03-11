@@ -22,14 +22,13 @@ export default function Login() {
 
   const handleLogin = async (formData) => {
     setLoading(true); // Show loader
+    const res = await login(formData);
+    setLoading(false); // Hide loader after response
 
-      const res = await login(formData);
-      setLoading(false); // Hide loader after response
-
-      if (res) {
-        navigate("/");
-        window.location.reload();
-      }
+    if (res) {
+      navigate("/");
+      window.location.reload();
+    }
   };
 
   return (

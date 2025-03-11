@@ -19,6 +19,7 @@ export default function Signup() {
     }
   };
 
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {error && <p className="text-red-500 text-center">{error}</p>}
