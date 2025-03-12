@@ -42,7 +42,7 @@ export default function Jobs() {
               <div className="mt-4 flex justify-end">
                 <button
                   onClick={() => navigate(`/jobs/${job._id}`)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition cursor-pointer"
+                  className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md  transition cursor-pointer"
                 >
                   View Job
                 </button>

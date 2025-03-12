@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { FaCloudUploadAlt } from "react-icons/fa"; // Import upload icon
 
 const API_URL = import.meta.env.VITE_BACKEND_API_URL;
 
@@ -11,6 +12,7 @@ export default function JobDetails() {
   const [matchScore, setMatchScore] = useState(null);
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Fetch Job Details
   useEffect(() => {
@@ -34,7 +36,8 @@ export default function JobDetails() {
   const handleApply = async (e) => {
     e.preventDefault();
     if (!resume) return;
-
+    
+    setLoading(true);
     const formData = new FormData();
     formData.append("resume", resume);
     formData.append("jobId", id);
@@ -52,6 +55,10 @@ export default function JobDetails() {
       setMatchScore(res.data.application.matchScore);
       setStatus(res.data.application.status);
       setMessage("✅ Application submitted successfully!");
+      setTimeout(() => {
+        setLoading(false);
+        setResume(null); // Reset file input
+      }, 1000);
     } catch (error) {
       console.error("Application Error:", error);
       setMessage("❌ Failed to apply for job.");
@@ -82,16 +89,22 @@ export default function JobDetails() {
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h2 className="text-xl font-semibold mb-4 text-blue-600">Upload Resume</h2>
         <form onSubmit={handleApply} className="space-y-4">
+        <label className="w-full flex items-center justify-center p-3 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer hover:border-blue-500 transition">
           <input
             type="file"
             accept=".pdf"
             onChange={(e) => setResume(e.target.files[0])}
-            className="w-full p-2 border border-gray-300 rounded-lg cursor-pointer"
+            className="hidden"
             required
           />
+          <FaCloudUploadAlt className="text-3xl text-gray-500 mr-2" />
+          <span className="text-gray-700">
+            {resume ? resume.name : "Upload Your Resume (PDF)"}
+          </span>
+        </label>
           <button 
             type="submit" 
-            className="w-full py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition cursor-pointer">
+            className="w-full py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md  transition cursor-pointer">
             Apply Now
           </button>
         </form>
