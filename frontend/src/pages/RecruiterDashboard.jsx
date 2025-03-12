@@ -34,12 +34,7 @@ export default function RecruiterDashboard() {
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Recruiter Dashboard</h1>
-        <button
-          onClick={() => navigate("/recruiter/post-job")}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition cursor-pointer"
-        >
-          + Post New Job
-        </button>
+        
       </div>
       <p className="mb-4">Welcome, <span className="font-semibold">{user?.name}</span></p>
 
