@@ -53,7 +53,7 @@ export default function RecruiterDashboard() {
                 </div>
                 <button
                   onClick={() => navigate(`/recruiter/jobs/${job._id}/applicants`)}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition cursor-pointer"
+                  className="px-4 py-2 bg-green-500 text-white hover:bg-green-600 transition rounded-lg shadow-md cursor-pointer"
                 >
                   View Applicants
                 </button>

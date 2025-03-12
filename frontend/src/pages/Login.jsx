@@ -50,14 +50,14 @@ export default function Login() {
           <div className="mt-4 space-x-4">
             <button
               onClick={() => handleDemoLogin("candidate")}
-              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition cursor-pointer"
+              className="px-4 py-2 bg-green-500 text-white hover:bg-green-600 transition rounded-lg shadow-md cursor-pointer"
               disabled={loading} // Disable while loading
             >
               Demo Candidate
             </button>
             <button
               onClick={() => handleDemoLogin("recruiter")}
-              className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition cursor-pointer"
+              className="px-4 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 transition cursor-pointer"
               disabled={loading} // Disable while loading
             >
               Demo Recruiter
