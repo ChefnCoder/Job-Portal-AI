@@ -1,64 +1,141 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  if (!user) return null; // ✅ Hide Navbar if not logged in
+  if (!user) return null;
 
   const handleLogout = async () => {
-    await logout(); // ✅ Ensure logout completes before moving forward
-    navigate("/"); // ✅ Redirect to Home
-    window.location.reload(); // ✅ Force page reload to clear session completely
+    await logout();
+    navigate("/");
+    window.location.reload();
   };
 
   return (
-    <nav className="p-4 bg-white shadow-md flex justify-between">
-      <Link to="/" className="text-lg font-bold">Job Portal</Link>
-      <div className="space-x-4">
-        
+    <nav className="relative bg-white p-4 shadow-md z-50">
 
-      {user.role === "candidate" && (
-        <>
+      <div className="flex justify-between items-center max-w-7xl mx-auto">
+        {/* Brand */}
+        <Link to="/" className="text-xl font-bold text-blue-600">
+          Job Portal
+        </Link>
+
+        {/* Hamburger */}
         <button
-            onClick={() => navigate("/jobs")}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md  hover:bg-blue-600 transition cursor-pointer border-"
-          >Jobs</button>
-          <button
-            onClick={() => navigate("/dashboard")}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md  hover:bg-blue-600 transition cursor-pointer border-"
-          >Dashboard</button>
-          {/* <Link to="/jobs" className="text-blue-500">Jobs</Link>
-          <Link to="/dashboard" className="text-blue-500">Dashboard</Link> */}
-        </>
-      )}
-
-        {user.role === "recruiter" && (
-          <>
-          <button
-            onClick={() => navigate("/recruiter-dashboard")}
-            className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md  transition cursor-pointer"
-          >Dashboard</button>
-          {/* <Link to="/recruiter-dashboard" className="text-blue-500"> Dashboard</Link> */}
-          <button
-            onClick={() => navigate("/recruiter/post-job")}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md  hover:bg-blue-600 transition cursor-pointer border-"
-          >
-            + Post New Job
-          </button>
-          </>
-          
-        )}
-
-        <button 
-          onClick={handleLogout} 
-          className="px-4 py-2 bg-red-500 text-white  rounded-lg shadow-md  hover:bg-red-600 transition cursor-pointertext-red-500 cursor-pointer"
+          className="lg:hidden text-gray-600"
+          onClick={() => setMenuOpen((prev) => !prev)}
         >
-          Logout
+          {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
+
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex items-center space-x-4">
+          {user.role === "candidate" && (
+            <>
+              <button
+                onClick={() => navigate("/jobs")}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Jobs
+              </button>
+              <button
+                onClick={() => navigate("/dashboard")}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Dashboard
+              </button>
+            </>
+          )}
+
+          {user.role === "recruiter" && (
+            <>
+              <button
+                onClick={() => navigate("/recruiter-dashboard")}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => navigate("/recruiter/post-job")}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                + Post New Job
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="absolute top-16 left-4 right-4 z-50 bg-white/80 backdrop-blur-md rounded-lg shadow-lg p-4 flex flex-col space-y-3 lg:hidden transition-all duration-300">
+
+          {user.role === "candidate" && (
+            <>
+              <button
+                onClick={() => {
+                  navigate("/jobs");
+                  setMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Jobs
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/dashboard");
+                  setMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Dashboard
+              </button>
+            </>
+          )}
+
+          {user.role === "recruiter" && (
+            <>
+              <button
+                onClick={() => {
+                  navigate("/recruiter-dashboard");
+                  setMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => {
+                  navigate("/recruiter/post-job");
+                  setMenuOpen(false);
+                }}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+              >
+                + Post New Job
+              </button>
+            </>
+          )}
+
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+        </div>
+      )}
     </nav>
   );
 }
