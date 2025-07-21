@@ -73,8 +73,7 @@ exports.applyForJob = async (req, res) => {
     - Use 'N/A' instead of leaving fields empty.
     - Do NOT include Markdown (\`\`\`json). Return raw JSON only.
     `;
-    // ✅ Debug: Check what is being sent to AI
-    console.log("✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅")
+    //Debug: Check what is being sent to AI
     console.log("Sending Prompt to AI:", prompt);
 
     // Send Resume & JD to Google Gemini AI
@@ -93,11 +92,11 @@ exports.applyForJob = async (req, res) => {
       );
     
       if (!aiResponse.data || aiResponse.status !== 200) {
-        console.error("❌ Gemini API Error Response:", aiResponse.data);
+        console.error(" Gemini API Error Response:", aiResponse.data);
         return res.status(500).json({ error: "AI processing failed" });
       }
     } catch (error) {
-      console.error("❌ Gemini API Request Failed:", error.response?.data || error.message);
+      console.error("Gemini API Request Failed:", error.response?.data || error.message);
       return res.status(500).json({ error: "Failed to process AI request" });
     }
     
@@ -157,32 +156,6 @@ exports.getCandidateApplications = async (req, res) => {
   }
 };
 
-// exports.getApplicantsForJob = async (req, res) => {
-//   try {
-//     const recruiterId = req.user.userId;
-
-//     // Find jobs posted by this recruiter
-//     const jobs = await Job.find({ postedBy: recruiterId });
-
-//     if (!jobs.length) {
-//       return res.status(404).json({ error: "No jobs found for this recruiter" });
-//     }
-
-//     // Extract job IDs
-//     const jobIds = jobs.map(job => job._id);
-
-//     // Fetch all applicants for these jobs & sort by match score (highest first)
-//     const applications = await Application.find({ jobId: { $in: jobIds } })
-//       .populate("candidateId", "name email") // Get candidate details
-//       .populate("jobId", "title") // Get job title
-//       .sort({ matchScore: -1 }); // Sort by highest match score
-
-//     res.status(200).json(applications);
-//   } catch (error) {
-//     console.error("Error fetching applicants:", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
 exports.getApplicantsForJob = async (req, res) => {
   try {
     const { jobId } = req.query;
