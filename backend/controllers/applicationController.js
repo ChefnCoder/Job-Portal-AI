@@ -242,8 +242,16 @@ exports.submitApplication = async (req, res) => {
       return res.status(400).json({ error: "Incomplete application data" });
     }
 
-    // Attach user ID to ensure authenticity
     applicationData.candidateId = req.user.userId;
+
+    const existingApp = await Application.findOne({
+      jobId: applicationData.jobId,
+      candidateId: applicationData.candidateId,
+    });
+
+    if (existingApp) {
+      return res.status(400).json({ error: "You have already applied for this job." });
+    }
 
     const application = new Application(applicationData);
     await application.save();
@@ -254,6 +262,7 @@ exports.submitApplication = async (req, res) => {
     res.status(500).json({ error: "Failed to submit application" });
   }
 };
+
 
 
 // Get Applications by Candidate

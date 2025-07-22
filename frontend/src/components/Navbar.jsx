@@ -39,13 +39,13 @@ export default function Navbar() {
             <>
               <button
                 onClick={() => navigate("/jobs")}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition cursor-pointer"
               >
                 Jobs
               </button>
               <button
                 onClick={() => navigate("/dashboard")}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition"
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition cursor-pointer"
               >
                 Dashboard
               </button>
@@ -71,7 +71,7 @@ export default function Navbar() {
 
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition"
+            className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition cursor-pointer"
           >
             Logout
           </button>
