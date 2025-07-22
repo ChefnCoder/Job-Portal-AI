@@ -1,13 +1,18 @@
 const express = require("express");
 const { verifyToken, candidateOnly,recruiterOnly } = require("../middleware/authMiddleware");
-const { applyForJob, getCandidateApplications, uploadMiddleware } = require("../controllers/applicationController");
+const { analyseResume, getCandidateApplications, uploadMiddleware, submitApplication,generateSuggestions } = require("../controllers/applicationController");
 const { getApplicantsForJob, updateApplicationStatus } = require("../controllers/applicationController");
 
 const router = express.Router();
 
 
 // Apply for a Job
-router.post("/apply", verifyToken, candidateOnly, uploadMiddleware, applyForJob);
+router.post("/apply", verifyToken, candidateOnly, uploadMiddleware, analyseResume);
+
+router.post("/suggestion", verifyToken,candidateOnly, generateSuggestions);
+
+router.post("/submit", verifyToken,candidateOnly, submitApplication);
+
 
 // Get Candidate's Applications
 router.get("/my-applications", verifyToken, candidateOnly, getCandidateApplications);

@@ -11,7 +11,7 @@ const upload = multer({ storage });
 // Middleware for handling file uploads in routes
 exports.uploadMiddleware = upload.single("resume");
 
-exports.applyForJob = async (req, res) => {
+exports.analyseResume = async (req, res) => {
   try {
     const { jobId } = req.body;
 
@@ -28,7 +28,7 @@ exports.applyForJob = async (req, res) => {
     const pdfData = await pdf(req.file.buffer);
     const pdfText = pdfData.text;
 
-    console.log("Extracted PDF Text:", pdfText);
+    // console.log("Extracted PDF Text:", pdfText);
     if (!pdfText || pdfText.trim().length === 0) {
       return res.status(500).json({ error: "Failed to extract text from resume" });
     }
@@ -74,7 +74,7 @@ exports.applyForJob = async (req, res) => {
     - Do NOT include Markdown (\`\`\`json). Return raw JSON only.
     `;
     //Debug: Check what is being sent to AI
-    console.log("Sending Prompt to AI:", prompt);
+    // console.log("Sending Prompt to AI:", prompt);
 
     // Send Resume & JD to Google Gemini AI
     let aiResponse;
@@ -135,16 +135,126 @@ exports.applyForJob = async (req, res) => {
 
     parsedData.skills = parsedData.skills || [];
     parsedData.matchScore= parsedData.matchScore || 0;
-    // Store Application
-    const application = new Application(parsedData);
-   await application.save();
+    
 
-    res.status(201).json({ message: "Application submitted successfully", application });
+
+
+   res.status(200).json({
+    message: "Resume Parsed and Data Extracted.",
+    parsedApplication: parsedData,
+    resumeExtract : responseText
+  });
+
   } catch (error) {
     console.error("Resume Processing Error:", error);
     res.status(500).json({ error: "Internal Server Error." });
   }
+
 };
+
+exports.generateSuggestions = async (req,res)=>{
+
+  try {
+    const { responseText,jobId } = req.body;
+
+    if (!responseText) {
+      return res.status(400).json({ error: "Incomplete application data" });
+    }
+    if (!jobId) {
+      return res.status(400).json({ error: "Job ID is required" });
+    }
+
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ error: "Job not found" });
+
+    const improvementPrompt = `
+    I’m uploading a job description and my current resume. Please analyze both and tell me, 
+
+    What skills, experiences, or keywords are missing in my resume that are mentioned or implied in the job description?
+
+    Suggest specific projects, certifications, or tools I could add to become a stronger candidate. 
+
+    Resume Text:
+    """ 
+    ${responseText}
+    """
+
+    Job Requirements:
+    """
+    ${job.title}
+    ${job.description}
+    Skills Required: ${job.skillsRequired.join(", ")}
+    Experience Level: ${job.experienceLevel}
+    """
+
+    respond strictly under 200 letters 
+    respond in this format:
+    {
+      Missing Skills/Experiences: 
+      Company Specific Skills that would Boost your Profile:
+      Extra Suggestions : 
+    }
+    `;
+
+    // Send Resume & JD to Google Gemini AI
+    let generateGeminiResponse;
+    try {
+      generateGeminiResponse = await axios.post(
+       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+,
+        {
+          contents: [{ parts: [{ text: improvementPrompt }] }],
+        },
+        {
+          /* headers: { "Content-Type": "application/json" }, */
+          params: { key: process.env.GEMINI_API_KEY },
+        }
+      );
+    
+      if (!generateGeminiResponse.data || generateGeminiResponse.status !== 200) {
+        console.error(" Gemini API Error Response:", generateGeminiResponse.data);
+        return res.status(500).json({ error: "AI processing failed" });
+      }
+    } catch (error) {
+      console.error("Gemini API Request Failed:", error.response?.data || error.message);
+      return res.status(500).json({ error: "Failed to process AI request" });
+    }
+
+    res.status(201).json({ 
+      message: "Suggestions generated successfully",
+      resumeSuggestions: generateGeminiResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text || "No suggestions generated"
+
+     });
+  } catch (error) {
+    console.error("Processing Error:", error);
+    res.status(500).json({ error: "Failed to generate Suggestions" });
+  }
+
+
+
+}
+
+exports.submitApplication = async (req, res) => {
+  try {
+    const { applicationData } = req.body;
+
+    if (!applicationData || !applicationData.jobId) {
+      return res.status(400).json({ error: "Incomplete application data" });
+    }
+
+    // Attach user ID to ensure authenticity
+    applicationData.candidateId = req.user.userId;
+
+    const application = new Application(applicationData);
+    await application.save();
+
+    res.status(201).json({ message: "Application submitted successfully", application });
+  } catch (error) {
+    console.error("Final Submission Error:", error);
+    res.status(500).json({ error: "Failed to submit application" });
+  }
+};
+
 
 // Get Applications by Candidate
 exports.getCandidateApplications = async (req, res) => {
