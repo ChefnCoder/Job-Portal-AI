@@ -328,3 +328,28 @@ exports.updateApplicationStatus = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+exports.deleteApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if application belongs to the logged-in user
+    const application = await Application.findById(id);
+
+    if (!application) {
+      return res.status(404).json({ error: "Application not found" });
+    }
+
+    if (application.candidateId.toString() !== req.user.userId) {
+      return res.status(403).json({ error: "Unauthorized to delete this application" });
+    }
+
+    await Application.findByIdAndDelete(id);
+    res.status(200).json({ message: "Application deleted successfully" });
+  } catch (error) {
+    console.error("Delete Application Error:", error);
+    res.status(500).json({ error: "Server error while deleting application" });
+  }
+};
+
