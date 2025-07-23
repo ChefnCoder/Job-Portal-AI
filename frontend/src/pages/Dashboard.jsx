@@ -58,7 +58,7 @@ export default function Dashboard() {
                   className="border border-gray-200 bg-white/90 p-5 rounded-xl flex justify-between items-center hover:shadow-lg transition duration-200"
                 >
                   <div>
-                    <h3 className="text-xl font-semibold text-gray-800">{app.jobId.title}</h3>
+                    <h3 className=" font-semibold text-gray-800">{app.jobId.title}</h3>
                     <p
                       className={`inline-block mt-1 text-sm px-3 py-1 rounded-full font-medium ${
                         statusStyles[app.status] || "bg-gray-100 text-gray-700"
