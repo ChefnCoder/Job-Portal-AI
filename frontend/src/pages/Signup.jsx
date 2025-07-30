@@ -9,9 +9,9 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async (formData) => {
-    setLoading(true); // Show loader
+    setLoading(true);
     const res = await signup(formData);
-    setLoading(false); // Hide loader after response
+    setLoading(false);
 
     if (res) {
       alert("Signup successful! Redirecting...");
@@ -19,20 +19,32 @@ export default function Signup() {
     }
   };
 
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {error && <p className="text-red-500 text-center">{error}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-slate-100 via-indigo-100 to-slate-100 px-4">
+      <div className="backdrop-blur-md bg-white/60 border border-slate-200 shadow-xl rounded-2xl p-10 w-full max-w-3xl animate-fade-in">
+        {/* Heading */}
+        <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">
+          Join Us Today 🚀
+        </h2>
+        <p className="text-center text-gray-600 text-sm mb-6">
+          Create your account to access all features
+        </p>
 
-      {/* Show Loader when loading */}
-      {loading ? (
-        <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-blue-500 border-solid"></div>
-          <p className="mt-2 text-blue-500">Signing up...</p>
-        </div>
-      ) : (
-        <AuthForm type="signup" onSubmit={handleSignup} />
-      )}
+        {/* Error */}
+        {error && (
+          <p className="text-sm text-red-500 text-center mb-4">{error}</p>
+        )}
+
+        {/* Loader */}
+        {loading ? (
+          <div className="flex flex-col items-center py-10">
+            <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="mt-3 text-blue-500 font-medium">Signing up...</p>
+          </div>
+        ) : (
+          <AuthForm type="signup" onSubmit={handleSignup} />
+        )}
+      </div>
     </div>
   );
 }

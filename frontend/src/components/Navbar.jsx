@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { Menu, X } from "lucide-react";
+//is importing two icon components – Menu and X – from the lucide-react library.
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -12,8 +13,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await logout();
-    navigate("/");
-    window.location.reload();
+    navigate("/"); //navigate to respective page and ensure no reload happens
+    window.location.reload(); //reload page after navigation
   };
 
   return (

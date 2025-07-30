@@ -5,10 +5,9 @@ export default function AuthForm({ type, onSubmit, defaultValues }) {
     name: "",
     email: "",
     password: "",
-    role: "candidate", // Default role
+    role: "candidate",
   });
 
-  // ✅ Autofill Form When `defaultValues` Change
   useEffect(() => {
     if (defaultValues) {
       setFormData((prev) => ({
@@ -29,62 +28,82 @@ export default function AuthForm({ type, onSubmit, defaultValues }) {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh] bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          {type === "login" ? "Login to Your Account" : "Create an Account"}
-        </h2>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Signup Fields */}
+      {type === "signup" && (
+        <>
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              Full Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="John Doe"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              required
+            />
+          </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {type === "signup" && (
-            <>
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-                required
-              />
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                className="w-full p-2 border rounded"
-                required
-              >
-                <option value="candidate">Candidate</option>
-                <option value="recruiter">Recruiter</option>
-              </select>
-            </>
-          )}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-            required
-          />
-          <button
-            type="submit"
-            className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md  transition cursor-pointer"
-          >
-            {type === "login" ? "Login" : "Signup"}
-          </button>
-        </form>
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+              Select Role
+            </label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+              required
+            >
+              <option value="candidate">Candidate</option>
+              <option value="recruiter">Recruiter</option>
+            </select>
+          </div>
+        </>
+      )}
+
+      {/* Email */}
+      <div>
+        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          Email
+        </label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+          required
+        />
       </div>
-    </div>
+
+      {/* Password */}
+      <div>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          Password
+        </label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="••••••••"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+          required
+        />
+      </div>
+
+      {/* Submit */}
+      <button
+        type="submit"
+        className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white  cursor-pointer font-medium rounded-lg transition shadow-md"
+      >
+        {type === "login" ? "Login" : "Sign Up"}
+      </button>
+    </form>
   );
 }
