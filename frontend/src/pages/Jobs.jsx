@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -27,30 +26,39 @@ export default function Jobs() {
   }, []);
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-6">Available Jobs</h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-indigo-50 to-slate-100 px-4 py-10">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+          Explore Opportunities ✨
+        </h1>
 
-      {jobs.length === 0 ? (
-        <p className="text-center text-gray-500">No jobs available.</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {jobs.map((job) => (
-            <div key={job._id} className="bg-white p-6 rounded-lg shadow-md border">
-              <h3 className="font-bold text-xl text-blue-600">{job.title}</h3>
-              <p className="text-sm text-gray-700 mt-2">{job.description}</p>
-              
-              <div className="mt-4 flex justify-end">
-                <button
-                  onClick={() => navigate(`/jobs/${job._id}`)}
-                  className="px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md  transition cursor-pointer"
-                >
-                  View Job
-                </button>
+        {jobs.length === 0 ? (
+          <div className="text-center text-gray-500 text-lg py-16">
+            No jobs available at the moment. Please check back later.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {jobs.map((job) => (
+              <div
+                key={job._id}
+                className="bg-white/70 border border-gray-200 backdrop-blur-sm shadow-lg rounded-xl p-6 hover:shadow-xl transition-all"
+              >
+                <h3 className="text-2xl font-semibold text-blue-700 mb-2">{job.title}</h3>
+                <p className="text-gray-600 text-sm line-clamp-4">{job.description}</p>
+
+                <div className="mt-6 flex justify-end">
+                  <button
+                    onClick={() => navigate(`/jobs/${job._id}`)}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white cursor-pointer rounded-lg shadow-md transition"
+                  >
+                    View Job
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

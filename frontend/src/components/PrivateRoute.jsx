@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom"; //Outlet:	Renders the actual child route component if the user passes the checks
 import { useAuth } from "../hooks/useAuth";
 
 export default function PrivateRoute({ allowedRoles }) {
