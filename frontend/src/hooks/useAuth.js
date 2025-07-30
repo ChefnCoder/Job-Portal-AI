@@ -18,7 +18,7 @@ export function useAuth() {
     try {
       return await axios(config);
     } catch (error) {
-      if (error.response?.status === 403) {
+      if (error.response?.status === 401 || error.response?.status === 403) {
         console.log(" Access Token Expired. Refreshing...");
         const newAccessToken = await refreshAccessToken();
         if (newAccessToken) {

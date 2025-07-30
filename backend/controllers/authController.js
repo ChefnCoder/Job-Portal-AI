@@ -35,7 +35,7 @@ const generateTokens = (user) => {
   const accessToken = jwt.sign(
     { userId: user._id, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: "15m" } // Short expiry for security
+    { expiresIn: "30m" } // Short expiry for security
   );
 
   const refreshToken = jwt.sign(
@@ -88,7 +88,7 @@ exports.refreshToken = async (req, res) => {
       const newAccessToken = jwt.sign(
         { userId: decoded.userId },
         process.env.JWT_SECRET,
-        { expiresIn: "15m" }
+        { expiresIn: "30m" }
       );
 
       res.status(200).json({ accessToken: newAccessToken });
