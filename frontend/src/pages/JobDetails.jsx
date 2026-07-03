@@ -13,6 +13,7 @@ export default function JobDetails() {
   const [status, setStatus] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [suggestionsLoading, setSuggestionsLoading] = useState(false);
 
   const [parsedApplication, setParsedApplication] = useState(null);
   const [resumeExtract, setResumeExtract] = useState("");
@@ -68,6 +69,7 @@ export default function JobDetails() {
   const handleGetSuggestions = async () => {
     if (!resumeExtract || !id) return;
 
+    setSuggestionsLoading(true);
     try {
       const token = localStorage.getItem("token");
       const res = await axios.post(
@@ -85,6 +87,8 @@ export default function JobDetails() {
     } catch (error) {
       console.error("Suggestion Error:", error);
       setSuggestions("❌ Failed to fetch suggestions.");
+    } finally {
+      setSuggestionsLoading(false);
     }
   };
 
@@ -104,10 +108,9 @@ export default function JobDetails() {
       setMessage("✅ Application submitted successfully!");
       setStatus("Applied");
     } catch (error) {
-      //console.error("Submission Error:", error);
-      if(error.status ==400 )
+      if (error.status == 400)
         setMessage("You have already applied for this job");
-      else 
+      else
         setMessage("❌ Failed to submit application.");
     }
   };
@@ -151,9 +154,13 @@ export default function JobDetails() {
           </label>
           <button
             type="submit"
-            className="w-full py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md transition cursor-pointer"
+            disabled={loading}
+            className="w-full py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-lg shadow-md transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
-            Analyze Resume
+            {loading && (
+              <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            )}
+            {loading ? "Analyzing..." : "Analyze Resume"}
           </button>
         </form>
 
@@ -169,12 +176,15 @@ export default function JobDetails() {
           <>
             <button
               onClick={handleGetSuggestions}
-              className="w-full mt-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-lg shadow-md transition cursor-pointer"
+              disabled={suggestionsLoading}
+              className="w-full mt-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-lg shadow-md transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Get AI Suggestions
+              {suggestionsLoading && (
+                <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              )}
+              {suggestionsLoading ? "Fetching suggestions..." : "Get AI Suggestions"}
             </button>
 
-            
             {suggestions && (
               <div className="mt-4 p-4 bg-gray-100 border-l-4 border-purple-500 text-gray-800 rounded space-y-2">
                 <h3 className="text-lg font-semibold text-purple-700">AI Suggestions</h3>
@@ -195,7 +205,6 @@ export default function JobDetails() {
               </div>
             )}
 
-              
             <button
               onClick={handleSubmitApplication}
               className="w-full mt-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-lg shadow-md transition cursor-pointer"
