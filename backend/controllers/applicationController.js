@@ -200,7 +200,7 @@ exports.generateSuggestions = async (req,res)=>{
     let generateGeminiResponse;
     try {
       generateGeminiResponse = await axios.post(
-       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 ,
         {
           contents: [{ parts: [{ text: improvementPrompt }] }],
